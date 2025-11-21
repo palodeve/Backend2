@@ -1,4 +1,4 @@
-// src/config/passport.config.js
+
 import passport from "passport";
 import local from "passport-local";
 import jwt from "passport-jwt";
@@ -77,7 +77,7 @@ const initializePassport = () => {
     )
   );
 
-  // JWT strategy: extrae desde cookie firmada o header Bearer
+  // JWT strategy
   passport.use(
     "jwt",
     new JWTStrategy(
@@ -90,7 +90,7 @@ const initializePassport = () => {
       },
       async (jwt_payload, done) => {
         try {
-          // En el payload guardamos id al firmar token
+          // guardamos id al firmar token
           const user = await userModel.findById(jwt_payload.id).select("-password");
           if (!user) return done(null, false);
           return done(null, user);

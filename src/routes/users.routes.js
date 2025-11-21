@@ -1,10 +1,9 @@
-// src/routes/users.routes.js
 import { Router } from "express";
 import UserModel from "../models/user.model.js";
 
 const router = Router();
 
-// GET all users
+// GET 
 router.get("/", async (req, res, next) => {
   try {
     const users = await UserModel.find().select("-password").lean();
@@ -14,7 +13,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// GET user by id
+// GET 
 router.get("/:uid", async (req, res, next) => {
   try {
     const user = await UserModel.findById(req.params.uid).select("-password").lean();
@@ -25,7 +24,7 @@ router.get("/:uid", async (req, res, next) => {
   }
 });
 
-// DELETE user
+// DELETE 
 router.delete("/:uid", async (req, res, next) => {
   try {
     const user = await UserModel.findByIdAndDelete(req.params.uid).lean();

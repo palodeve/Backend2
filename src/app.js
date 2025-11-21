@@ -1,4 +1,3 @@
-// src/app.js
 import { engine } from 'express-handlebars';
 import express from 'express';
 import cors from 'cors';
@@ -34,24 +33,23 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.JWT_SECRET)); // cookie parser con secret para signed cookies
+app.use(cookieParser(process.env.JWT_SECRET)); 
 
 // passport
 initializePassport();
 app.use(passport.initialize());
 
-// RUTAS RENDER (login page simple)
+// RUTAS 
 app.get('/login', (req, res) => {
   if (req.signedCookies.currentUser) return res.redirect('/current');
   res.render('login');
 });
 
 app.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
-  // req.user set by passport
   res.render('current', { user: req.user });
 });
 
-// API routes
+// API 
 app.use('/api/users', userRouter);
 app.use('/api/sessions', sessionRouter);
 

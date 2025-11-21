@@ -12,10 +12,5 @@ const errorMW = (err, _req, res, _next) => {
 
 
 };
-
 export default errorMW;
 
-
-
-
-//||
