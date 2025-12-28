@@ -51,6 +51,20 @@ router.post(
     res.json({ status: "success", token });
   }
 );
+
+
+// LOGOUT web
+router.post('/logout-web', (_req, res) => {
+  res.clearCookie(COOKIE,{
+    path:'/',
+    sameSite:'lax',
+    secure: IS_PROD,
+    httpOnly:true,
+    signed:true
+  });
+  return res.redirect(303,'/login');
+});
+
 // CURRENT 
 router.get(
   "/current",
@@ -59,5 +73,8 @@ router.get(
     res.json({ status: "success", user: req.user });
   }
 );
+
+
+
 
 export default router;

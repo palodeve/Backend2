@@ -8,10 +8,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-
+import 'dotenv/config';
+import viewsRouter from './routes/views.routes.js';
+import {config} from './config/config.js';
 // routers
 import userRouter from './routes/users.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
+
 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -52,6 +55,15 @@ app.get('/current', passport.authenticate('jwt', { session: false }), (req, res)
 // API 
 app.use('/api/users', userRouter);
 app.use('/api/sessions', sessionRouter);
+app.use('/', viewsRouter);
+
+//salud+rutas
+app.get('/health', (req, res) => res.json({ok:true}));
+app.use('/', viewsRouter);
+app.use('/api/sessions', sessionRouter);
+app.use('/private',protectRouter);
+
+// Manejo de errores
 
 // 404
 app.use((_req, res) => res.status(404).json({ message: 'ruta no encontrada' }));
