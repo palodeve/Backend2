@@ -61,11 +61,9 @@ app.use('/', viewsRouter);
 app.get('/health', (req, res) => res.json({ok:true}));
 app.use('/', viewsRouter);
 app.use('/api/sessions', sessionRouter);
-app.use('/private',protectRouter);
+//app.use('/private',protectRouter);
 
-// Manejo de errores
-
-// 404
+// Manejo de errores-404
 app.use((_req, res) => res.status(404).json({ message: 'ruta no encontrada' }));
 
 export default app;

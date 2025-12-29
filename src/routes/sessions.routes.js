@@ -2,6 +2,8 @@ import { Router } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import UserDTO from "../dto/user.dto.js";
+
 
 dotenv.config();
 
@@ -65,14 +67,38 @@ router.post('/logout-web', (_req, res) => {
   return res.redirect(303,'/login');
 });
 
+/* LOGIN (WEB) */
+router.post('/login-web', (req, res, next) => {
+  passport.authenticate('local', { session: false }, (err, user) => {
+    if (err) return next(err);
+    if (!user) return res.redirect('/login?error=Credenciales%20inv%C3%A1lidas');
+
+    const token = sign({ sub: user.id, email: user.email, role: user.role });
+
+    res.cookie(COOKIE, token, {
+      httpOnly: true,
+      signed: true,
+      sameSite: 'lax',   
+      secure: IS_PROD,
+      maxAge: 15 * 60 * 1000,
+      path: '/'
+    });
+
+    return res.json({ ok: true });
+  })(req, res, next);
+});
+
+
 // CURRENT 
 router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json({ status: "success", user: req.user });
+    const userDTO = new UserDTO(req.user);
+    res.json({ status: "success", user: userDTO });
   }
 );
+
 
 
 
